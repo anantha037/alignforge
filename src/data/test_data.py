@@ -10,7 +10,7 @@ from typing import Optional
 
 import sys
 import os
-from dataset_loader import DollyDatasetLoader
+from dataset_loader import DollyDatasetLoader, HHRLHFDatasetLoader
 from data_collator import SFTDataCollator
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -63,6 +63,23 @@ def main():
             print("GPU NOT AVAILABLE LOCALLY - SKIPPING MODEL LOAD TEST")
         else:
             raise e
+            
+    print("\n--- DPO DATASET TEST ---")
+    dpo_config_path = os.path.join(base_dir, "configs", "dpo_config.yaml")
+    dpo_loader = HHRLHFDatasetLoader(dpo_config_path)
+    dpo_dataset_dict = dpo_loader.load_and_prepare(tokenizer)
+    
+    dpo_loader.get_dataset_stats(dpo_dataset_dict)
+    
+    first_sample = dpo_dataset_dict["train"][0]
+    print("\nFirst sample prompt (truncated):")
+    print(first_sample["prompt"][:300] + ("..." if len(first_sample["prompt"]) > 300 else ""))
+    print("\nFirst sample chosen (truncated):")
+    print(first_sample["chosen"][:300] + ("..." if len(first_sample["chosen"]) > 300 else ""))
+    print("\nFirst sample rejected (truncated):")
+    print(first_sample["rejected"][:300] + ("..." if len(first_sample["rejected"]) > 300 else ""))
+    
+    print("\nDPO DATASET TEST PASSED")
 
 if __name__ == "__main__":
     main()
