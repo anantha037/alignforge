@@ -10,3 +10,4 @@ einops
 pyyaml
 huggingface_hub
 rich
+numpy<2.0.0
