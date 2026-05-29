@@ -9,3 +9,4 @@ scipy
 einops
 pyyaml
 huggingface_hub
+rich
