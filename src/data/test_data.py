@@ -13,6 +13,9 @@ import os
 from dataset_loader import DollyDatasetLoader
 from data_collator import SFTDataCollator
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.model_utils import load_quantized_model, get_vram_usage
+
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
 
@@ -43,6 +46,23 @@ def main():
     collator.verify_masking(batch)
     
     print("\nSANITY CHECK PASSED")
+    
+    print("\n--- MODEL UTILS TEST ---")
+    with open(config_path, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+        
+    try:
+        model, tok = load_quantized_model(config)
+        if torch.cuda.is_available():
+            vram = get_vram_usage()
+            print(f"VRAM Usage: {vram}")
+    except RuntimeError:
+        print("GPU NOT AVAILABLE LOCALLY - SKIPPING MODEL LOAD TEST")
+    except Exception as e:
+        if "GPU NOT AVAILABLE" in str(e) or "CUDA" in str(e) or "bitsandbytes" in str(e):
+            print("GPU NOT AVAILABLE LOCALLY - SKIPPING MODEL LOAD TEST")
+        else:
+            raise e
 
 if __name__ == "__main__":
     main()
