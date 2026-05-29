@@ -35,6 +35,8 @@ def load_quantized_model(config: dict) -> tuple:
         trust_remote_code=True
     )
     
+    model.config.use_cache = False
+    
     logger.info(f"Loading tokenizer for {model_name}")
     tokenizer = AutoTokenizer.from_pretrained(
         model_name,
