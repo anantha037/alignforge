@@ -5,8 +5,7 @@ import logging
 import yaml
 import traceback
 from pathlib import Path
-from transformers import TrainingArguments
-from trl import SFTTrainer
+from trl import SFTTrainer, SFTConfig
 from src.data.dataset_loader import DollyDatasetLoader
 from src.data.data_collator import SFTDataCollator
 from src.utils.model_utils import load_quantized_model, apply_lora, get_vram_usage, save_model
@@ -51,7 +50,7 @@ class QLoRASFTTrainer:
         logger.info("Building TrainingArguments and SFTTrainer")
         t_args = self.config['training']
         
-        args = TrainingArguments(
+        args = SFTConfig(
             output_dir=t_args["output_dir"],
             num_train_epochs=t_args["num_train_epochs"],
             per_device_train_batch_size=t_args["per_device_train_batch_size"],
@@ -71,7 +70,9 @@ class QLoRASFTTrainer:
             report_to=t_args["report_to"],
             run_name=t_args["run_name"],
             dataloader_pin_memory=False,
-            remove_unused_columns=False
+            remove_unused_columns=False,
+            max_seq_length=self.config["model"]["max_seq_length"],
+            dataset_text_field="text"
         )
         
         self.trainer = SFTTrainer(
@@ -80,7 +81,6 @@ class QLoRASFTTrainer:
             train_dataset=self.dataset_dict["train"],
             eval_dataset=self.dataset_dict["eval"],
             data_collator=self.collator,
-            dataset_text_field="text",
         )
         logger.info("Trainer built successfully.")
         
