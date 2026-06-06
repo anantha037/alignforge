@@ -77,29 +77,30 @@ class DPOAlignmentTrainer:
     def build_trainer(self):
         logger.info("Building DPOConfig and DPOTrainer")
         
-        args_dict = {**self.config['training'], **self.config['dpo']}
+        t_args = self.config['training']
+        d_args = self.config['dpo']
         
         args = DPOConfig(
-            output_dir=args_dict.get("output_dir"),
-            num_train_epochs=args_dict.get("num_train_epochs"),
-            per_device_train_batch_size=args_dict.get("per_device_train_batch_size"),
-            per_device_eval_batch_size=args_dict.get("per_device_eval_batch_size"),
-            gradient_accumulation_steps=args_dict.get("gradient_accumulation_steps"),
-            gradient_checkpointing=args_dict.get("gradient_checkpointing"),
-            learning_rate=args_dict.get("learning_rate"),
-            lr_scheduler_type=args_dict.get("lr_scheduler_type"),
-            warmup_ratio=args_dict.get("warmup_ratio"),
-            fp16=args_dict.get("fp16"),
-            logging_steps=args_dict.get("logging_steps"),
-            eval_steps=args_dict.get("eval_steps"),
-            save_steps=args_dict.get("save_steps"),
-            save_total_limit=args_dict.get("save_total_limit"),
-            report_to=args_dict.get("report_to"),
-            run_name=args_dict.get("run_name"),
-            beta=args_dict.get("beta", 0.1),
-            loss_type=args_dict.get("loss_type", "sigmoid"),
-            max_prompt_length=args_dict.get("max_prompt_length", 512),
-            max_length=args_dict.get("max_length", 1024),
+            output_dir=t_args.get("output_dir"),
+            num_train_epochs=t_args.get("num_train_epochs"),
+            per_device_train_batch_size=t_args.get("per_device_train_batch_size"),
+            per_device_eval_batch_size=t_args.get("per_device_eval_batch_size"),
+            gradient_accumulation_steps=t_args.get("gradient_accumulation_steps"),
+            gradient_checkpointing=t_args.get("gradient_checkpointing"),
+            learning_rate=t_args.get("learning_rate"),
+            lr_scheduler_type=t_args.get("lr_scheduler_type"),
+            warmup_ratio=t_args.get("warmup_ratio"),
+            fp16=t_args.get("fp16"),
+            logging_steps=t_args.get("logging_steps"),
+            eval_steps=t_args.get("eval_steps"),
+            save_steps=t_args.get("save_steps"),
+            save_total_limit=t_args.get("save_total_limit"),
+            report_to=t_args.get("report_to"),
+            run_name=t_args.get("run_name"),
+            beta=d_args.get("beta", 0.1),
+            loss_type=d_args.get("loss_type", "sigmoid"),
+            max_prompt_length=d_args.get("max_prompt_length", 512),
+            max_length=d_args.get("max_length", 1024),
             remove_unused_columns=False
         )
         
