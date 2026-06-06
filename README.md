@@ -1,5 +1,10 @@
 # AlignForge
 
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![HuggingFace](https://img.shields.io/badge/🤗-Models-yellow)
+![W&B](https://img.shields.io/badge/Weights%26Biases-Tracking-orange)
+
 AlignForge is a complete, end-to-end machine learning pipeline demonstrating how to fine-tune and align large language models using consumer-grade hardware. By implementing a sequence of Supervised Fine-Tuning (SFT) and Direct Preference Optimization (DPO) on the Phi-3-mini architecture, this project serves as a robust educational blueprint for researchers and developers looking to understand and apply modern LLM alignment techniques practically and efficiently.
 
 ## Pipeline Overview
@@ -60,7 +65,7 @@ alignforge/
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/alignforge.git
+   git clone https://github.com/anantha037/alignforge.git
    cd alignforge
    ```
 2. **Set up the virtual environment:**

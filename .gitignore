@@ -39,4 +39,4 @@ outputs/
 *.ckpt
 wandb/
 .ipynb_checkpoints/
-results/*.json
+# results/*.json
